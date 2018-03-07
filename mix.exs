@@ -7,7 +7,17 @@ defmodule Host.MixProject do
       version: "0.1.0",
       elixir: "~> 1.6",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      description: "Reverse DNS lookups via the Unix 'host' utility",
+      package: package()
+    ]
+  end
+
+  defp package do
+    [
+      licenses: ["MIT"],
+      maintainers: ["dogweather"],
+      links: %{"GitHub" => "https://github.com/dogweather/host"}
     ]
   end
 
