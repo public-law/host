@@ -4,12 +4,15 @@ defmodule Host.MixProject do
   def project do
     [
       app: :host,
-      version: "0.2.0",
+      version: "0.2.1",
       elixir: "~> 1.6",
-      start_permanent: Mix.env() == :prod,
       deps: deps(),
+      package: package(),
+      start_permanent: Mix.env() == :prod,
+
+      # Docs
       description: "Reverse DNS lookups via the Unix 'host' utility",
-      package: package()
+      source_url: "https://github.com/dogweather/host"
     ]
   end
 

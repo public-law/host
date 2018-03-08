@@ -1,14 +1,16 @@
 defmodule Host do
   @moduledoc """
-  A small suite of DNS query functions.
+  A small suite of DNS query functions which wrap the Unix host utility.
   """
 
   @doc """
-  Reverse DNS lookup from an IP address as tuple.
+  Reverse DNS lookup from an IP address as a tuple or bitstring.
 
   ## Examples
 
       iex> Host.reverse_lookup(ip: {127,0,0,1})
+      {:ok, "localhost"}
+      iex> Host.reverse_lookup(ip: "127.0.0.1")
       {:ok, "localhost"}
 
   """
@@ -17,15 +19,6 @@ defmodule Host do
     reverse_lookup(ip: "#{a}.#{b}.#{c}.#{d}")
   end
 
-  @doc """
-  Reverse DNS lookup from an IP address as bitstring.
-
-  ## Examples
-
-      iex> Host.reverse_lookup(ip: "127.0.0.1")
-      {:ok, "localhost"}
-
-  """
   def reverse_lookup(ip: ip) when is_bitstring(ip) do
     {output, status} = System.cmd("host", [ip])
 
