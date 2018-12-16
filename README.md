@@ -6,6 +6,7 @@ Currently supports reverse lookups in either bitstring or tuple format:
 ```elixir
 iex(1)> Host.reverse_lookup(ip: "172.217.5.206")
 {:ok, "lax28s10-in-f14.1e100.net"}
+
 iex(2)> Host.reverse_lookup(ip: {172,217,5,206})
 {:ok, "lax28s10-in-f14.1e100.net"}
 ```
