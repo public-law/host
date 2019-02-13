@@ -42,8 +42,11 @@ defmodule Host do
   end
 
   def parent_ptr_domain(ip) when is_bitstring(ip) do
-    first_three_octets = ip |> split(".") |> reverse |> tail |> reverse |> join(".")
-    ptr_domain(first_three_octets)
+    ip
+    |> ptr_domain
+    |> split(".")
+    |> tail
+    |> join(".")
   end
 
   def ptr_domain(ip) when is_bitstring(ip) do
