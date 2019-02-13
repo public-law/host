@@ -22,8 +22,8 @@ defmodule IPv4 do
     %IPv4{octets: {d, c, b, a}}
   end
 
-  def ptr_domain(ipv4) do
-    reverse_addr_string = IPv4.to_string(reverse(ipv4))
+  def ptr_domain(%IPv4{octets: {a, b, c, d}}) do
+    reverse_addr_string = IPv4.to_string(reverse(%IPv4{octets: {a, b, c, d}}))
     "#{reverse_addr_string}.in-addr.arpa"
   end
 
