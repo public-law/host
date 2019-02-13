@@ -1,30 +1,12 @@
 defmodule IPv4 do
-  use Vex.Struct
+  @enforce_keys [:octets]
+  defstruct [:octets]
 
-  @enforce_keys [:a, :b, :c, :d]
-  defstruct [:a, :b, :c, :d]
+  def new(a, b, c, d) when is_integer(a) and is_integer(b) and is_integer(c) and is_integer(d) do
+    %IPv4{octets: {a, b, c, d}}
+  end
 
-  validates(:a,
-    presence: true,
-    number: [greater_than_or_equal_to: 0, less_than_or_equal_to: 255]
-  )
-
-  validates(:b,
-    presence: true,
-    number: [greater_than_or_equal_to: 0, less_than_or_equal_to: 255]
-  )
-
-  validates(:c,
-    presence: true,
-    number: [greater_than_or_equal_to: 0, less_than_or_equal_to: 255]
-  )
-
-  validates(:d,
-    presence: true,
-    number: [greater_than_or_equal_to: 0, less_than_or_equal_to: 255]
-  )
-
-  def to_string(%IPv4{a: a, b: b, c: c, d: d}) do
+  def to_string(%IPv4{octets: {a, b, c, d}}) do
     "#{a}.#{b}.#{c}.#{d}"
   end
 end
