@@ -23,4 +23,8 @@ defmodule IPv4 do
     presence: true,
     number: [greater_than_or_equal_to: 0, less_than_or_equal_to: 255]
   )
+
+  def to_string(%IPv4{a: a, b: b, c: c, d: d}) do
+    "#{a}.#{b}.#{c}.#{d}"
+  end
 end
