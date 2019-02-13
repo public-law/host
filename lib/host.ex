@@ -1,6 +1,7 @@
 defmodule Host do
   import String, only: [split: 2]
-  import Enum, only: [join: 2, reverse: 1]
+  import Enum, only: [join: 2]
+  require IPv4
 
   @moduledoc """
   A small suite of DNS query functions which wrap the Unix host utility.
@@ -60,12 +61,11 @@ defmodule Host do
   @spec parent_ptr_domain(binary()) :: binary()
   def parent_ptr_domain(ip) when is_bitstring(ip) do
     ip
-    |> ptr_domain
-    |> dot_tail
-  end
-
-  def ptr_domain(ip) when is_bitstring(ip) do
-    "#{dot_reverse(ip)}.in-addr.arpa"
+    |> IPv4.new_from_string()
+    |> IPv4.ptr_domain()
+    |> split(".")
+    |> tail
+    |> join(".")
   end
 
   def email_domain(soa_email) when is_bitstring(soa_email), do: dot_tail(soa_email)
@@ -78,13 +78,6 @@ defmodule Host do
     dotted_string
     |> split(".")
     |> tail
-    |> join(".")
-  end
-
-  def dot_reverse(dotted_string) when is_bitstring(dotted_string) do
-    dotted_string
-    |> split(".")
-    |> reverse
     |> join(".")
   end
 
