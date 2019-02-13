@@ -9,7 +9,14 @@ defmodule Host do
   Extended Reverse DNS lookup.
   """
   def ext_reverse_lookup(ip: ip) when is_bitstring(ip) do
-    reverse_lookup(ip: ip)
+    case reverse_lookup(ip: ip) do
+      {:ok, name} ->
+        {:ok, name}
+
+      {:error, _} ->
+        DNS.resolve(parent_ptr_domain(ip), :soa)
+        |> soa_email_domain
+    end
   end
 
   @doc """
@@ -21,7 +28,6 @@ defmodule Host do
       {:ok, "localhost"}
       iex> Host.reverse_lookup(ip: "127.0.0.1")
       {:ok, "localhost"}
-
   """
   def reverse_lookup(ip: {a, b, c, d})
       when is_integer(a) and is_integer(b) and is_integer(c) and is_integer(d) do
@@ -41,9 +47,15 @@ defmodule Host do
     end
   end
 
-  def soa_email_domain({:ok, [{_, email, _, _, _, _, _}]}), do: email_domain(email)
+  def soa_email_domain({:ok, [{_, email, _, _, _, _, _}]}) when is_list(email) do
+    email
+    |> List.to_string()
+    |> email_domain
+  end
+
   def soa_email_domain({:error, reason}), do: {:error, reason}
 
+  @spec parent_ptr_domain(binary()) :: binary()
   def parent_ptr_domain(ip) when is_bitstring(ip) do
     ip
     |> ptr_domain
@@ -54,21 +66,21 @@ defmodule Host do
     "#{dot_reverse(ip)}.in-addr.arpa"
   end
 
-  def email_domain(soa_email) when is_bitstring(soa_email) do
+  def email_domain(soa_email) do
     dot_tail(soa_email)
   end
 
   @doc """
   Treat the dotted string as a list, returning its tail.
   """
-  def dot_tail(dotted_string) when is_binary(dotted_string) do
+  def dot_tail(dotted_string) do
     dotted_string
     |> split(".")
     |> tail
     |> join(".")
   end
 
-  def dot_reverse(dotted_string) when is_binary(dotted_string) do
+  def dot_reverse(dotted_string) do
     dotted_string
     |> split(".")
     |> reverse
