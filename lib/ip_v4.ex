@@ -9,6 +9,11 @@ defmodule IPv4 do
     end
   end
 
+  def new_from_string(ip) when is_bitstring(ip) do
+    [a, b, c, d] = String.split(ip, ".") |> Enum.map(&String.to_integer/1)
+    new(a, b, c, d)
+  end
+
   def new(a, b, c, d) when is_octet(a) and is_octet(b) and is_octet(c) and is_octet(d) do
     %IPv4{octets: {a, b, c, d}}
   end
