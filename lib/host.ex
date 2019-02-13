@@ -26,17 +26,15 @@ defmodule Host do
   end
 
   def reverse_lookup(ip: ip) when is_bitstring(ip) do
-    {output, status} = System.cmd("host", [ip])
-
-    case status do
-      0 ->
+    case System.cmd("host", [ip]) do
+      {output, 0} ->
         %{"domain" => domain} =
           Regex.named_captures(~r/domain name pointer (?<domain>.+)\.$/, output)
 
         {:ok, domain}
 
-      _ ->
-        {:error, output}
+      {message, _} ->
+        {:error, message}
     end
   end
 end
