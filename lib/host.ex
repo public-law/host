@@ -1,4 +1,7 @@
 defmodule Host do
+  import String, only: [split: 2]
+  import Enum, only: [join: 2, reverse: 1]
+
   @moduledoc """
   A small suite of DNS query functions which wrap the Unix host utility.
   """
@@ -10,7 +13,7 @@ defmodule Host do
   end
 
   @doc """
-  Reverse DNS lookup from an IP address as a tuple or bitstring.
+  Reverse DNS lookup from an IP address as a tuple or bit
 
   ## Examples
 
@@ -38,16 +41,21 @@ defmodule Host do
     end
   end
 
+  def parent_ptr_domain(ip) when is_bitstring(ip) do
+    first_three_octets = ip |> split(".") |> reverse |> tail |> reverse |> join(".")
+    ptr_domain(first_three_octets)
+  end
+
   def ptr_domain(ip) when is_bitstring(ip) do
-    ip_part = String.split(ip, ".") |> Enum.reverse() |> Enum.join(".")
-    "#{ip_part}.in-addr.arpa"
+    reverse_ip = ip |> split(".") |> reverse |> join(".")
+    "#{reverse_ip}.in-addr.arpa"
   end
 
   def email_domain(soa_email) when is_bitstring(soa_email) do
     soa_email
-    |> String.split(".")
+    |> split(".")
     |> tail
-    |> Enum.join(".")
+    |> join(".")
   end
 
   def tail(a_list) when is_list(a_list) do
