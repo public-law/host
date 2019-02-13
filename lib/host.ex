@@ -48,25 +48,32 @@ defmodule Host do
   end
 
   def ptr_domain(ip) when is_bitstring(ip) do
-    reverse_ip = ip |> split(".") |> reverse |> join(".")
-    "#{reverse_ip}.in-addr.arpa"
+    "#{dot_reverse(ip)}.in-addr.arpa"
   end
 
   def email_domain(soa_email) when is_bitstring(soa_email) do
     dot_tail(soa_email)
   end
 
-  def tail(a_list) when is_list(a_list) do
-    [_x | xs] = a_list
-    xs
-  end
-
-  # Treat the dotted string as a list, returning its
-  # tail.
+  @doc """
+  Treat the dotted string as a list, returning its tail.
+  """
   def dot_tail(dotted_string) when is_binary(dotted_string) do
     dotted_string
     |> split(".")
     |> tail
     |> join(".")
+  end
+
+  def dot_reverse(dotted_string) when is_binary(dotted_string) do
+    dotted_string
+    |> split(".")
+    |> reverse
+    |> join(".")
+  end
+
+  def tail(a_list) when is_list(a_list) do
+    [_x | xs] = a_list
+    xs
   end
 end
