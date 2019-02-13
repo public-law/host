@@ -45,6 +45,15 @@ defmodule HostTest do
   end
 
   describe "soa_email_domain/1" do
-    test "returns the domain from an IP's SOA."
+    test "returns the domain from an IP's SOA result." do
+      # DNS.resolve("4.3.2.in-addr.arpa", :soa)
+      answer =
+        {:ok,
+         [
+           {'happy.crazy.town.com', 'dns.crazy.town.com', 23, 900, 600, 86400, 3600}
+         ]}
+
+      assert Host.soa_email_domain(answer) == "crazy.town.com"
+    end
   end
 end
