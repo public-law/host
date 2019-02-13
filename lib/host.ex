@@ -37,4 +37,9 @@ defmodule Host do
         {:error, message}
     end
   end
+
+  def ptr_domain(ip: ip) when is_bitstring(ip) do
+    ip_part = String.split(ip, ".") |> Enum.reverse() |> Enum.join(".")
+    "#{ip_part}.in-addr.arpa"
+  end
 end
