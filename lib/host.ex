@@ -4,6 +4,7 @@ defmodule Host do
   """
 
   def ext_reverse_lookup(ip: ip) when is_bitstring(ip) do
+    reverse_lookup(ip: ip)
   end
 
   @doc """
