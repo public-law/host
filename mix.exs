@@ -4,7 +4,7 @@ defmodule Host.MixProject do
   def project do
     [
       app: :host,
-      version: "0.2.1",
+      version: "1.0.0",
       elixir: "~> 1.6",
       deps: deps(),
       package: package(),
