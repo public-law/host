@@ -52,7 +52,7 @@ defmodule Host do
   end
 
   def soa_email_domain({:ok, [{_, email, _, _, _, _, _}]}) when is_list(email) do
-    {:ok, email |> List.to_string() |> email_domain}
+    {:ok, email |> email_domain}
   end
 
   def soa_email_domain({:error, reason}), do: {:error, reason}
@@ -68,9 +68,8 @@ defmodule Host do
     "#{dot_reverse(ip)}.in-addr.arpa"
   end
 
-  def email_domain(soa_email) do
-    dot_tail(soa_email)
-  end
+  def email_domain(soa_email) when is_bitstring(soa_email), do: dot_tail(soa_email)
+  def email_domain(soa_email) when is_list(soa_email), do: email_domain(List.to_string(soa_email))
 
   @doc """
   Treat the dotted string as a list, returning its tail.
