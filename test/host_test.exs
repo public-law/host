@@ -8,7 +8,9 @@ defmodule HostTest do
     end
 
     test "malformed ip produces an error" do
-      assert {:error, _message} = Host.reverse_lookup(ip: "1.2.3.4.5")
+      assert_raise MatchError, fn ->
+        Host.reverse_lookup(ip: "1.2.3.4.5")
+      end
     end
 
     test "works with standard ip structure" do

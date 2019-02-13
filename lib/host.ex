@@ -34,13 +34,16 @@ defmodule Host do
       iex> Host.reverse_lookup(ip: "127.0.0.1")
       {:ok, "localhost"}
   """
-  def reverse_lookup(ip: {a, b, c, d})
-      when is_integer(a) and is_integer(b) and is_integer(c) and is_integer(d) do
-    reverse_lookup(ip: "#{a}.#{b}.#{c}.#{d}")
-  end
+  def reverse_lookup(ip: {a, b, c, d}),
+    do: reverse_lookup(ip: IPv4.new(a, b, c, d))
+
+  def reverse_lookup(ip: %IPv4{octets: octets}),
+    do: reverse_lookup(ip: IPv4.to_string(%IPv4{octets: octets}))
 
   def reverse_lookup(ip: ip) when is_bitstring(ip) do
-    case System.cmd("host", [ip]) do
+    ipv4 = IPv4.new_from_string(ip)
+
+    case System.cmd("host", [IPv4.to_string(ipv4)]) do
       {output, 0} ->
         %{"domain" => domain} =
           Regex.named_captures(~r/domain name pointer (?<domain>.+)\.$/, output)
