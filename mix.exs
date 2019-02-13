@@ -11,8 +11,8 @@ defmodule Host.MixProject do
       start_permanent: Mix.env() == :prod,
 
       # Docs
-      description: "Reverse DNS lookups via the Unix 'host' utility",
-      source_url: "https://github.com/dogweather/host"
+      description: "Reverse DNS lookups",
+      source_url: "https://github.com/public-law/host"
     ]
   end
 
@@ -20,7 +20,7 @@ defmodule Host.MixProject do
     [
       licenses: ["MIT"],
       maintainers: ["dogweather"],
-      links: %{"GitHub" => "https://github.com/dogweather/host"}
+      links: %{"GitHub" => "https://github.com/public-law/host"}
     ]
   end
 
