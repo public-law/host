@@ -27,8 +27,14 @@ defmodule HostTest do
   end
 
   describe "ptr_domain/1" do
-    test "it creates a ptr domain" do
+    test "it creates a properly formatted ptr domain" do
       assert Host.ptr_domain("1.2.3.4") == "4.3.2.1.in-addr.arpa"
+    end
+  end
+
+  describe "email_domain/1" do
+    test "returns just the domain portion of an SOA email" do
+      assert Host.email_domain("bob.snafu.com") == "snafu.com"
     end
   end
 end

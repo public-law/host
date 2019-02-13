@@ -42,4 +42,16 @@ defmodule Host do
     ip_part = String.split(ip, ".") |> Enum.reverse() |> Enum.join(".")
     "#{ip_part}.in-addr.arpa"
   end
+
+  def email_domain(soa_email) when is_bitstring(soa_email) do
+    soa_email
+    |> String.split(".")
+    |> tail
+    |> Enum.join(".")
+  end
+
+  def tail(a_list) when is_list(a_list) do
+    [_x | xs] = a_list
+    xs
+  end
 end
