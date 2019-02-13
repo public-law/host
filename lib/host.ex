@@ -14,7 +14,7 @@ defmodule Host do
         {:ok, name}
 
       {:error, _} ->
-        DNS.resolve(parent_ptr_domain(ip), :soa)
+        DNS.resolve(String.to_charlist(parent_ptr_domain(ip)), :soa)
         |> soa_email_domain
     end
   end
