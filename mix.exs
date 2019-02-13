@@ -4,7 +4,7 @@ defmodule Host.MixProject do
   def project do
     [
       app: :host,
-      version: "0.2.1",
+      version: "1.0.0",
       elixir: "~> 1.6",
       deps: deps(),
       package: package(),
@@ -36,7 +36,8 @@ defmodule Host.MixProject do
     [
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"},
-      {:ex_doc, "~> 0.18.3", only: :dev}
+      {:dns, "~> 2.1.2"},
+      {:ex_doc, "~> 0.19", only: :dev}
     ]
   end
 end
