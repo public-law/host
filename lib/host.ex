@@ -41,9 +41,8 @@ defmodule Host do
     end
   end
 
-  def soa_email_domain({:ok, [{_, email, _, _, _, _, _}]}) when is_bitstring(email) do
-    email_domain(email)
-  end
+  def soa_email_domain({:ok, [{_, email, _, _, _, _, _}]}), do: email_domain(email)
+  def soa_email_domain({:error, reason}), do: {:error, reason}
 
   def parent_ptr_domain(ip) when is_bitstring(ip) do
     ip

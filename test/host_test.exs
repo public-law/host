@@ -55,5 +55,10 @@ defmodule HostTest do
 
       assert Host.soa_email_domain(answer) == "crazy.town.com"
     end
+
+    test "does something reasonable when not found" do
+      answer = {:error, :not_found}
+      assert({:error, :not_found} = Host.soa_email_domain(answer))
+    end
   end
 end
