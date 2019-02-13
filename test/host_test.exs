@@ -21,4 +21,8 @@ defmodule HostTest do
   test "functions like reverse_lookup() when host is found" do
     assert Host.ext_reverse_lookup(ip: "127.0.0.1") == {:ok, "localhost"}
   end
+
+  test "malformed ip produces an error here too" do
+    assert {:error, _message} = Host.ext_reverse_lookup(ip: "1.2.3.4.5")
+  end
 end
