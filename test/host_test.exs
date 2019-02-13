@@ -50,7 +50,7 @@ defmodule HostTest do
       answer =
         {:ok,
          [
-           {'happy.crazy.town.com', 'dns.crazy.town.com', 23, 900, 600, 86400, 3600}
+           {"happy.crazy.town.com", "dns.crazy.town.com", 23, 900, 600, 86400, 3600}
          ]}
 
       assert Host.soa_email_domain(answer) == "crazy.town.com"
