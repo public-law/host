@@ -27,6 +27,6 @@ defmodule HostTest do
   end
 
   test "it creates a ptr domain" do
-    assert Host.ptr_domain(ip: "1.2.3.4") == "4.3.2.1.in-addr.arpa"
+    assert Host.ptr_domain("1.2.3.4") == "4.3.2.1.in-addr.arpa"
   end
 end
