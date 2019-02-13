@@ -18,6 +18,10 @@ defmodule IPv4 do
     %IPv4{octets: {a, b, c, d}}
   end
 
+  def reverse(%IPv4{octets: {a, b, c, d}}) do
+    %IPv4{octets: {d, c, b, a}}
+  end
+
   def to_string(%IPv4{octets: {a, b, c, d}}) do
     "#{a}.#{b}.#{c}.#{d}"
   end

@@ -19,4 +19,15 @@ defmodule IPv4Test do
       assert IPv4.to_string(address) == "1.2.3.4"
     end
   end
+
+  describe "reverse/1" do
+    test "works with valid input" do
+      assert IPv4.reverse(IPv4.new(127, 0, 0, 1)) == IPv4.new(1, 0, 0, 127)
+    end
+
+    test "is the inverse of itself" do
+      addr = IPv4.new(10, 20, 30, 40)
+      assert IPv4.reverse(IPv4.reverse(addr)) == addr
+    end
+  end
 end
