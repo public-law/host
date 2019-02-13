@@ -30,4 +30,11 @@ defmodule IPv4Test do
       assert IPv4.reverse(IPv4.reverse(addr)) == addr
     end
   end
+
+  describe "ptr_domain/1" do
+    test "words for a valid ip" do
+      addr = IPv4.new(10, 20, 30, 40)
+      assert IPv4.ptr_domain(addr) == "40.30.20.10.in-addr.arpa"
+    end
+  end
 end
