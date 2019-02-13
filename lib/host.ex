@@ -10,13 +10,17 @@ defmodule Host do
   """
   def ext_reverse_lookup(ip: ip) when is_bitstring(ip) do
     case reverse_lookup(ip: ip) do
-      {:ok, name} ->
-        {:ok, name}
-
-      {:error, _} ->
-        DNS.resolve(String.to_charlist(parent_ptr_domain(ip)), :soa)
-        |> soa_email_domain
+      {:ok, name} -> {:ok, name}
+      {:error, _} -> deep_search(ip)
     end
+  end
+
+  defp deep_search(ip) when is_bitstring(ip) do
+    ip
+    |> parent_ptr_domain()
+    |> String.to_charlist()
+    |> DNS.resolve(:soa)
+    |> soa_email_domain
   end
 
   @doc """
@@ -48,9 +52,7 @@ defmodule Host do
   end
 
   def soa_email_domain({:ok, [{_, email, _, _, _, _, _}]}) when is_list(email) do
-    email
-    |> List.to_string()
-    |> email_domain
+    {:ok, email |> List.to_string() |> email_domain}
   end
 
   def soa_email_domain({:error, reason}), do: {:error, reason}
