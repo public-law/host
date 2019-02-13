@@ -74,14 +74,14 @@ defmodule Host do
   @doc """
   Treat the dotted string as a list, returning its tail.
   """
-  def dot_tail(dotted_string) do
+  def dot_tail(dotted_string) when is_bitstring(dotted_string) do
     dotted_string
     |> split(".")
     |> tail
     |> join(".")
   end
 
-  def dot_reverse(dotted_string) do
+  def dot_reverse(dotted_string) when is_bitstring(dotted_string) do
     dotted_string
     |> split(".")
     |> reverse
