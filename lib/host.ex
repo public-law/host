@@ -3,6 +3,9 @@ defmodule Host do
   A small suite of DNS query functions which wrap the Unix host utility.
   """
 
+  def ext_reverse_lookup(ip: ip) when is_bitstring(ip) do
+  end
+
   @doc """
   Reverse DNS lookup from an IP address as a tuple or bitstring.
 

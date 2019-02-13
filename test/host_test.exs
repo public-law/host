@@ -11,6 +11,14 @@ defmodule HostTest do
   end
 
   test "works with standard ip structure" do
-    assert Host.reverse_lookup(ip: {127,0,0,1}) == {:ok, "localhost"}
+    assert Host.reverse_lookup(ip: {127, 0, 0, 1}) == {:ok, "localhost"}
+  end
+
+  #
+  # ext_reverse_lookup()
+  #
+
+  test "functions like reverse_lookup() when host is found" do
+    assert Host.ext_reverse_lookup(ip: "127.0.0.1") == {:ok, "localhost"}
   end
 end
