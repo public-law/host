@@ -33,17 +33,17 @@ defmodule Host do
       {:ok, "localhost"}
       iex> Host.reverse_lookup(ip: "127.0.0.1")
       {:ok, "localhost"}
+      iex> Host.reverse_lookup(ip: IPv4.new(127,0,0,1))
+      {:ok, "localhost"}
   """
   def reverse_lookup(ip: {a, b, c, d}),
     do: reverse_lookup(ip: IPv4.new(a, b, c, d))
 
-  def reverse_lookup(ip: %IPv4{octets: octets}),
-    do: reverse_lookup(ip: IPv4.to_string(%IPv4{octets: octets}))
+  def reverse_lookup(ip: ip) when is_bitstring(ip),
+    do: reverse_lookup(ip: IPv4.new_from_string(ip))
 
-  def reverse_lookup(ip: ip) when is_bitstring(ip) do
-    ipv4 = IPv4.new_from_string(ip)
-
-    case System.cmd("host", [IPv4.to_string(ipv4)]) do
+  def reverse_lookup(ip: %IPv4{octets: octets}) do
+    case System.cmd("host", [IPv4.to_string(%IPv4{octets: octets})]) do
       {output, 0} ->
         %{"domain" => domain} =
           Regex.named_captures(~r/domain name pointer (?<domain>.+)\.$/, output)
