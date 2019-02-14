@@ -2,12 +2,7 @@ defmodule IPv4 do
   @enforce_keys [:octets]
   defstruct [:octets]
 
-  # A complex guard
-  defmacro is_octet(number) do
-    quote do
-      is_integer(unquote(number)) and unquote(number) >= 0 and unquote(number) <= 255
-    end
-  end
+  defguard is_octet(number) when is_integer(number) and number >= 0 and number <= 255
 
   def new_from_string(ip) when is_bitstring(ip) do
     [a, b, c, d] = String.split(ip, ".") |> Enum.map(&String.to_integer/1)
