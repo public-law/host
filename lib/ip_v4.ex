@@ -18,16 +18,12 @@ defmodule IPv4 do
     %IPv4{octets: {a, b, c, d}}
   end
 
-  def reverse(%IPv4{octets: {a, b, c, d}}) do
-    %IPv4{octets: {d, c, b, a}}
-  end
-
   def ptr_domain(%IPv4{octets: {a, b, c, d}}) do
-    reverse_addr_string = IPv4.to_string(reverse(%IPv4{octets: {a, b, c, d}}))
+    reverse_addr_string = %IPv4{octets: {a, b, c, d}} |> reverse |> IPv4.to_string()
     "#{reverse_addr_string}.in-addr.arpa"
   end
 
-  def to_string(%IPv4{octets: {a, b, c, d}}) do
-    "#{a}.#{b}.#{c}.#{d}"
-  end
+  def reverse(%IPv4{octets: {a, b, c, d}}), do: %IPv4{octets: {d, c, b, a}}
+
+  def to_string(%IPv4{octets: {a, b, c, d}}), do: "#{a}.#{b}.#{c}.#{d}"
 end
