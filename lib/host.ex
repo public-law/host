@@ -61,7 +61,6 @@ defmodule Host do
 
   def soa_email_domain({:error, reason}), do: {:error, reason}
 
-  @spec parent_ptr_domain(binary()) :: binary()
   def parent_ptr_domain(ip) when is_bitstring(ip) do
     ip
     |> IPv4.new_from_string()
