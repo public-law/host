@@ -1,6 +1,7 @@
 defmodule Host do
   import String, only: [split: 2]
-  import Enum, only: [join: 2, reverse: 1]
+  import Enum, only: [join: 2]
+  require IPv4
 
   @moduledoc """
   A small suite of DNS query functions which wrap the Unix host utility.
@@ -32,14 +33,17 @@ defmodule Host do
       {:ok, "localhost"}
       iex> Host.reverse_lookup(ip: "127.0.0.1")
       {:ok, "localhost"}
+      iex> Host.reverse_lookup(ip: IPv4.new(127,0,0,1))
+      {:ok, "localhost"}
   """
-  def reverse_lookup(ip: {a, b, c, d})
-      when is_integer(a) and is_integer(b) and is_integer(c) and is_integer(d) do
-    reverse_lookup(ip: "#{a}.#{b}.#{c}.#{d}")
-  end
+  def reverse_lookup(ip: {a, b, c, d}),
+    do: reverse_lookup(ip: IPv4.new(a, b, c, d))
 
-  def reverse_lookup(ip: ip) when is_bitstring(ip) do
-    case System.cmd("host", [ip]) do
+  def reverse_lookup(ip: ip) when is_bitstring(ip),
+    do: reverse_lookup(ip: IPv4.new_from_string(ip))
+
+  def reverse_lookup(ip: %IPv4{octets: octets}) do
+    case System.cmd("host", [IPv4.to_string(%IPv4{octets: octets})]) do
       {output, 0} ->
         %{"domain" => domain} =
           Regex.named_captures(~r/domain name pointer (?<domain>.+)\.$/, output)
@@ -57,15 +61,13 @@ defmodule Host do
 
   def soa_email_domain({:error, reason}), do: {:error, reason}
 
-  @spec parent_ptr_domain(binary()) :: binary()
   def parent_ptr_domain(ip) when is_bitstring(ip) do
     ip
-    |> ptr_domain
-    |> dot_tail
-  end
-
-  def ptr_domain(ip) when is_bitstring(ip) do
-    "#{dot_reverse(ip)}.in-addr.arpa"
+    |> IPv4.new_from_string()
+    |> IPv4.ptr_domain()
+    |> split(".")
+    |> tail
+    |> join(".")
   end
 
   def email_domain(soa_email) when is_bitstring(soa_email), do: dot_tail(soa_email)
@@ -78,13 +80,6 @@ defmodule Host do
     dotted_string
     |> split(".")
     |> tail
-    |> join(".")
-  end
-
-  def dot_reverse(dotted_string) when is_bitstring(dotted_string) do
-    dotted_string
-    |> split(".")
-    |> reverse
     |> join(".")
   end
 

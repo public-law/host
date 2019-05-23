@@ -1,7 +1,7 @@
-# Host
+# Reverse DNS
 
-Provides DNS querying via the ubiquitous [host](http://manpages.ubuntu.com/manpages/bionic/man1/host.1.html) utility. 
-Currently supports reverse lookups in either bitstring or tuple format:
+Provides reverse DNS name lookup. I.e., given an IP address, `1.2.3.4`, it
+tries to find its domain name, `happy.town.com`.
 
 ```elixir
 iex(1)> Host.reverse_lookup(ip: "172.217.5.206")

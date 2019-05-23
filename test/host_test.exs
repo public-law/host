@@ -8,7 +8,9 @@ defmodule HostTest do
     end
 
     test "malformed ip produces an error" do
-      assert {:error, _message} = Host.reverse_lookup(ip: "1.2.3.4.5")
+      assert_raise MatchError, fn ->
+        Host.reverse_lookup(ip: "1.2.3.4.5")
+      end
     end
 
     test "works with standard ip structure" do
@@ -22,13 +24,9 @@ defmodule HostTest do
     end
 
     test "malformed ip produces an error here too" do
-      assert {:error, _message} = Host.ext_reverse_lookup(ip: "1.2.3.4.5")
-    end
-  end
-
-  describe "ptr_domain/1" do
-    test "it creates a properly formatted ptr domain" do
-      assert Host.ptr_domain("1.2.3.4") == "4.3.2.1.in-addr.arpa"
+      assert_raise MatchError, fn ->
+        Host.ext_reverse_lookup(ip: "1.2.3.4.5")
+      end
     end
   end
 
