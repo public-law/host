@@ -14,7 +14,7 @@ iex(2)> Host.reverse_lookup(ip: {172,217,5,206})
 This is useful e.g. in Phoenix, to get the vistor's domain name if it exists:
 
 ```elixir
-domain = Host.reverse_lookup(ip: conn.remote_ip)
+{:ok, visitor_domain_name} = Host.reverse_lookup(ip: conn.remote_ip)
 ```
 
 ## Installation
