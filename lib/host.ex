@@ -35,6 +35,8 @@ defmodule Host do
       {:ok, "localhost"}
       iex> Host.reverse_lookup(ip: IPv4.new(127,0,0,1))
       {:ok, "localhost"}
+      iex> Host.reverse_lookup(ip: "172.58.40.121")
+      {:error, "alias result"}
   """
   def reverse_lookup(ip: {a, b, c, d}),
     do: reverse_lookup(ip: IPv4.new(a, b, c, d))
